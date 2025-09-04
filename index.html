@@ -187,6 +187,18 @@
   scrollbar-width: thin;              /* épaisseur */
   scrollbar-color: rgba(255,255,255,0.25) transparent;
 }
+.logo-hero {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3; /* au-dessus du fond */
+}
+
+.logo-hero img {
+  height: 80px; /* ajuste la taille du logo */
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4)); /* optionnel, pour lisibilité */
+}
 
     /* Tabbar */
     .tabbar {
@@ -225,6 +237,10 @@
   <main id="top">
 
 <section class="hero">
+  <div class="logo-hero">
+    <img src="images/logo.svg" alt="Logo">
+  </div>
+
   <div class="carousel">
     <div class="slide active" style="background-image:url('https://undsgn.com/wp-content/uploads/2018/06/hulgjayakfo.jpg')"></div>
     <div class="slide" style="background-image:url('https://www.francebleu.fr/pikapi/images/d585a3f8-35c7-4d50-8c4d-07e6e9d703b7/1200x680?webp=false')"></div>
@@ -241,6 +257,7 @@
     </div>
   </div>
 </section>
+
 
 
     <!-- PROJETS -->
@@ -384,118 +401,83 @@
     <a href="#contact" class="tab-link"><i class="bi bi-envelope"></i><span>Contact</span></a>
   </nav>
 
-  <script>
-    // Smooth anchor scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        const href=a.getAttribute('href');
-        if(href.length>1){e.preventDefault();document.querySelector(href).scrollIntoView({behavior:'smooth'});}
-      });
-    });
+<script>
 document.addEventListener("DOMContentLoaded", () => {
+
+  // ===== Smooth Scroll =====
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if(href && href.length > 1){
+        e.preventDefault();
+        document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ===== Tabbar =====
+  const tabLinks = document.querySelectorAll(".tabbar .tab-link");
+
+  function activateTab(tab) {
+    tabLinks.forEach(link => {
+      link.classList.remove("active");
+      const icon = link.querySelector("i");
+      if(icon && icon.className.includes("-fill")){
+        icon.className = icon.className.replace("-fill","");
+      }
+    });
+
+    tab.classList.add("active");
+
+    const icon = tab.querySelector("i");
+    if(icon && !icon.className.includes("-fill")){
+      icon.className = icon.className.replace(/bi-\w+/g, m => m + "-fill");
+    }
+  }
+
+  // clic sur tab
+  tabLinks.forEach(link => link.addEventListener("click", () => activateTab(link)));
+
+  activateTab(document.querySelector('.tabbar .tab-link[href="#top"]'));
+
+  // ===== IntersectionObserver pour suivre les sections =====
+  const sections = document.querySelectorAll("main section, .hero");
+  const observerOptions = {
+    root: null,
+    threshold: 0.1,          
+    rootMargin: "-20% 0px -20% 0px"
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.id || "top";
+        const link = document.querySelector(`.tabbar .tab-link[href="#${id}"]`);
+        if(link) activateTab(link);
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(sec => io.observe(sec));
+
+  // ===== Carousel Hero =====
   const slides = document.querySelectorAll(".slide");
-  let index = 0;
-
-  function showNextSlide() {
-    slides.forEach((slide, i) => {
-      slide.classList.remove("active");
-      slide.style.zIndex = 0;
-    });
-
-    index = (index + 1) % slides.length;
-    slides[index].classList.add("active");
-    slides[index].style.zIndex = 1;
+  if(slides.length){
+    let index = 0;
+    setInterval(() => {
+      slides.forEach(s => { 
+        s.classList.remove("active"); 
+        s.style.zIndex = 0; 
+      });
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+      slides[index].style.zIndex = 1;
+    }, 10000);
   }
 
-  setInterval(showNextSlide, 15000);
 });
+</script>
 
-    // Reveal on scroll
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach((e)=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
-    },{threshold:.16});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // Lightbox video
-    const lb = document.getElementById('lightbox');
-    const player = document.getElementById('player');
-    function openVideo(src){
-      lb.hidden=false;
-      player.innerHTML=`<iframe src="${src}&autoplay=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
-      document.body.style.overflow='hidden';
-    }
-    function closeVideo(){
-      lb.hidden=true; player.innerHTML=''; document.body.style.overflow='';
-    }
-    document.getElementById('overlay').addEventListener('click', closeVideo);
-    document.getElementById('close').addEventListener('click', closeVideo);
-    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'&&!lb.hidden) closeVideo(); });
-
-    document.querySelectorAll('.card').forEach(card=>{
-      const src = card.getAttribute('data-video');
-      function trigger(){ openVideo(src); }
-      card.addEventListener('click', trigger);
-      card.addEventListener('keyup', (e)=>{ if(e.key==='Enter' || e.key===' ') trigger(); });
-    });
-
-    // Fake contact form (demo)
-    document.getElementById('contact-form').addEventListener('submit', (e)=>{
-      e.preventDefault();
-      document.getElementById('success').style.display='block';
-    });
-    function getAverageColor(el) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  const width = el.offsetWidth;
-  const height = el.offsetHeight;
-
-  canvas.width = width;
-  canvas.height = height;
-
-  try {
-    ctx.drawImage(
-      document.elementFromPoint(
-        el.getBoundingClientRect().left + el.offsetWidth / 2,
-        el.getBoundingClientRect().top + el.offsetHeight / 2
-      ),
-      0, 0, 1, 1
-    );
-  } catch (e) {
-    return { r: 30, g: 30, b: 30 }; // fallback sombre
-  }
-
-  const data = ctx.getImageData(0, 0, 1, 1).data;
-  return { r: data[0], g: data[1], b: data[2] };
-}
-
-function updateTabbarTheme() {
-  const tabbar = document.querySelector(".tabbar");
-  const rect = tabbar.getBoundingClientRect();
-  const el = document.elementFromPoint(rect.left + rect.width/2, rect.top + rect.height/2);
-
-  if (!el) return;
-
-  // calcul couleur moyenne approximative
-  const style = window.getComputedStyle(el);
-  const bg = style.backgroundColor.match(/\d+/g);
-  if (!bg) return;
-
-  const [r,g,b] = bg.map(Number);
-
-  const luminance = (0.299*r + 0.587*g + 0.114*b) / 255;
-
-  if (luminance > 0.6) {
-    tabbar.classList.add("dark");
-    tabbar.classList.remove("light");
-  } else {
-    tabbar.classList.add("light");
-    tabbar.classList.remove("dark");
-  }
-}
-
-window.addEventListener("scroll", updateTabbarTheme);
-window.addEventListener("resize", updateTabbarTheme);
-
-  </script>
 </body>
 </html>
