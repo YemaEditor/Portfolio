@@ -5,25 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portfolio — Réalisateur / Créatif</title>
   <meta name="description" content="Portfolio minimal inspiré de Fabien Brucy — projets vidéo, bio, contact." />
+
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
   <style>
-    :root{
+    :root {
       --bg:#0b0b0c; --fg:#fafafa; --muted:#bdbdbf; --glass:rgba(255,255,255,.06);
       --line:rgba(255,255,255,.12); --accent:#e7e7ea; --brand:#ffffff;
       --max:1200px; --pad:clamp(16px, 3vw, 28px);
     }
+
     *{box-sizing:border-box}
-    html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    html,body{
+      margin:0;
+      padding: 0;
+      overflow-x: hidden;
+      height:100%;
+      background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
+
     .container{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
     .grid{display:grid;gap:clamp(14px,1.8vw,22px)}
+
     .btn{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--line);padding:.8rem 1.1rem;border-radius:999px;background:var(--glass);backdrop-filter:saturate(1.2) blur(6px);-webkit-backdrop-filter:saturate(1.2) blur(6px);color:var(--fg);}
     .btn:hover{border-color:#fff}
+
     /* Header */
     header{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px);background:linear-gradient(180deg, rgba(11,11,12,.8), rgba(11,11,12,.35) 60%, transparent)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:14px var(--pad);border-bottom:1px solid var(--line)}
@@ -32,63 +43,76 @@
     .nav a{opacity:.85}
     .nav a:hover{opacity:1}
     .nav-links{display:flex;gap:1rem}
+
 .hero {
   position: relative;
-  width: 99.9vw;
+  width: 100%;
   height: 100vh;
-  background: url("https://undsgn.com/wp-content/uploads/2018/06/hulgjayakfo.jpg") no-repeat center center;
-  background-size: cover; /* image prend 100% largeur et hauteur */
+  overflow: hidden;
   display: flex;
-  justify-content: center ; /* texte aligné à droite */
-  align-items: center; /* centré verticalement */
-  padding: 2rem;
-  left: -40%;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
 }
 
-.hero::before {
+.carousel {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  z-index: 0;
+}
+.slide::before {
   content: "";
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4); /* overlay sombre pour lisibilité */
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(0,0,0,0.4); /* niveau d'assombrissement, ajuste 0.4 à ton goût */
+  z-index: 1;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
 }
 
 .hero-inner {
   position: relative;
-  max-width: 600px;
-  text-align: center;
-  color: white;
+  z-index: 2;
+  max-width: 800px;
+  padding: 20px;
+}
+
+/* Overlay fondu bas */
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, rgba(11,11,12,0) 0%, rgba(11,11,12,1) 100%);
   z-index: 1;
 }
 
-
-@media (max-width: 900px) {
-  .hero {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
-  .hero-inner {
-    padding: 1.5rem;
-  }
-}
-
-    @media (max-width:900px){.hero-inner{grid-template-columns:1fr;}}
-    .kicker{letter-spacing:.35em;text-transform:uppercase;color:var(--muted);font-size:.8rem}
+    .kicker{letter-spacing:.35em;text-transform:uppercase;color:var(--muted);font-size:.8rem;margin-bottom:10px}
     .title{font-family:"Playfair Display",serif;font-size:clamp(40px,7vw,88px);line-height:1.03;margin:8px 0}
-    .lead{color:#d7d7da;font-size:clamp(16px,2.2vw,20px)}
-    .hero figure{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background: #0f0f11}
-    .hero figure img{height:100%;width:100%;object-fit:cover;opacity:.95;transform:scale(1.02)}
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-  justify-content: center; /* centre horizontalement */
-}
+    .lead{color:#d7d7da;font-size:clamp(16px,2.2vw,20px);margin-bottom:20px}
+    .chips{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
     .chip{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--line);padding:.8rem 1.1rem;border-radius:999px;background:var(--glass);backdrop-filter:saturate(1.2) blur(6px);-webkit-backdrop-filter:saturate(1.2) blur(6px);color:var(--fg);}
+
     /* Section titles */
-    .section{padding:clamp(48px,8vw,96px) 0;border-bottom:1px solid var(--line)}
+    .section{padding:clamp(48px,8vw,96px) 0;border-bottom:1px solid var(--line);text-align:center}
     .section h2{font-size:clamp(28px,4.5vw,52px);margin:.2rem 0 1rem;font-family:"Playfair Display",serif}
     .section .sub{color:var(--muted);text-transform:uppercase;letter-spacing:.28em;font-size:.75rem}
+
     /* Projects */
     .projects{grid-template-columns:repeat(12, 1fr)}
     .card{grid-column:span 6; position:relative; overflow:hidden; border-radius:22px; border:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));}
@@ -97,237 +121,199 @@
     .thumb{aspect-ratio:16/9; overflow:hidden}
     .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
     .card:hover .thumb img{transform:scale(1.06)}
-    .meta{padding:16px 16px 18px}
+    .meta{padding:16px 16px 18px;text-align:left}
     .meta h3{margin:0 0 6px;font-size:clamp(18px,2.6vw,22px)}
     .meta p{margin:0;color:#d0d0d4}
     .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .tag{border:1px solid var(--line);padding:.35rem .7rem;border-radius:999px;color:#dcdce0}
     .play{position:absolute;inset:auto 16px 16px auto;background:var(--glass);border:1px solid var(--line);border-radius:999px;padding:.6rem .9rem;display:flex;align-items:center;gap:.5rem}
+
+    .img-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.3);
+      z-index: 10;
+    }
+
     /* About */
-    .cols{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,3vw,28px)}
+    .cols{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,3vw,28px);text-align:left}
     @media (max-width:900px){.cols{grid-template-columns:1fr}}
     .about-box{border:1px solid var(--line);border-radius:22px;padding:clamp(18px,2.8vw,28px);background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02))}
     .list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
     .list li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:10px 0}
     .list small{color:var(--muted)}
+
     /* Contact */
-    form{display:grid;gap:10px}
     input,textarea{width:100%;background:#0f0f11;border:1px solid var(--line);border-radius:14px;color:var(--fg);padding:12px 14px;font:inherit}
     textarea{min-height:140px;resize:vertical}
     .success{display:none;margin-top:10px;color:#9be29b}
+
     /* Footer */
     footer{padding:28px var(--pad);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#c9c9cf}
-    /* Reveal on scroll */
-    .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease}
-    .reveal.visible{opacity:1;transform:none}
-    .tabbar {
-  position: fixed;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(95%, 420px);
-  display: flex;
-  justify-content: space-around;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 28px;
-  padding: 8px 12px;
-  z-index: 999; /* pour être au-dessus de tout */
+/* Scrollbar — Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.tab-link {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.75rem;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color .3s ease;
+::-webkit-scrollbar-track {
+  background: transparent; /* ou var(--bg) */
 }
 
-.tab-link i {
-  font-size: 1.4rem;
-}
-
-.tab-link.active,
-.tab-link:hover {
-  color: var(--fg);
-}
-.tabbar.light {
-  background: rgba(255,255,255,0.06);
-  color: var(--fg);
-}
-
-.tabbar.light .tab-link {
-  color: var(--muted);
-}
-
-.tabbar.light .tab-link.active {
-  color: var(--fg);
-}
-
-.tabbar.dark {
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: white;
-}
-
-.tabbar.dark .tab-link {
-  color: rgba(255,255,255,0.6);
-}
-
-.tabbar.dark .tab-link.active {
-  color: white;
-}
-.img-tag {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  padding: 6px 12px;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 600;
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.3);
-  z-index: 10;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background .3s ease;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.45);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Scrollbar — Firefox */
+* {
+  scrollbar-width: thin;              /* épaisseur */
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+}
+
+    /* Tabbar */
+    .tabbar {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(95%, 420px);
+      display: flex;
+      justify-content: space-around;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 8px 12px;
+      z-index: 999;
+    }
+    .tab-link {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .3s ease;
+    }
+    .tab-link i {font-size: 1.4rem;}
+    .tab-link.active, .tab-link:hover {color: var(--fg);}
   </style>
 </head>
-<body>
-  <main id="top" class="container">
-    <!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="kicker">Aksel Salitot</div>
-      <h1 class="title">Une histoire se raconte avec des mots.</h1>
-      <p class="lead">Réalisateur & créatif basé en France. Courts-métrages, Long-métrage.</p>
-      <div class="chips">
-        <span class="chip">Réalisation</span>
-        <span class="chip">Écriture</span>
-      </div>
 
+<body>
+  <main id="top">
+
+<section class="hero">
+  <div class="carousel">
+    <div class="slide active" style="background-image:url('https://undsgn.com/wp-content/uploads/2018/06/hulgjayakfo.jpg')"></div>
+    <div class="slide" style="background-image:url('https://www.francebleu.fr/pikapi/images/d585a3f8-35c7-4d50-8c4d-07e6e9d703b7/1200x680?webp=false')"></div>
+    <div class="slide" style="background-image:url('https://www.formations-audiovisuel.fr/images/Ressourcesimage0/2093-1706177046-1_2/metier-realisateur.jpg')"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="kicker">Aksel Salitot</div>
+    <h1 class="title">Une histoire se raconte avec des mots.</h1>
+    <p class="lead">Réalisateur & créatif basé en France. Courts-métrages, Long-métrage.</p>
+    <div class="chips">
+      <span class="chip">Réalisation</span>
+      <span class="chip">Écriture</span>
     </div>
   </div>
 </section>
 
 
+    <!-- PROJETS -->
+    <section id="projets" class="section container">
+      <p class="sub">Sélection</p>
+      <h2>Projets</h2>
 
-<!-- PROJETS -->
-<section id="projets" class="section">
+      <div class="grid projects">
 
-  <p class="sub">Sélection</p>
-  <h2>Projets</h2>
-
-  <div class="grid projects">
-
-    <!-- CARD 1 -->
-    <article class="card reveal">
-      <div class="thumb">
-        <img src="images/Calderón.png" alt="Affiche du projet Calderón">
-      </div>
+        <!-- Projet 1 -->
+        <article class="card">
+          <div class="thumb"><img src="images/Calderón.png" alt="Affiche du projet Calderón"></div>
           <span class="img-tag">Image non définitive</span>
+          <div class="meta">
+            <h3>Calderón</h3>
+            <p>Long-métrage — Réalisation, Écriture, Commencé en 2025</p>
+            <div class="tags"><span class="tag">Policier</span><span class="tag">Scénario</span><span class="tag">En cours d'écriture</span></div>
+          </div>
+        </article>
 
-      <div class="meta">
-        <h3>Calderón</h3>
-        <p>Long-métrage — Réalisation, Scénarisation, Commencé en 2025</p>
-        <div class="tags">
-          <span class="tag">Policier</span>
-          <span class="tag">Scénario</span>
-          <span class="tag">En cours d'écriture</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- CARD 2 -->
-    <article class="card reveal">
-      <div class="thumb">
-        <img src="images/Wraith .png" alt="Affiche du projet Wraith">
-      </div>
+        <!-- Projet 1 -->
+        <article class="card">
+          <div class="thumb"><img src="images/Wraith .png" alt="Affiche du projet Calderón"></div>
           <span class="img-tag">Image non définitive</span>
+          <div class="meta">
+            <h3>Wraith</h3>
+            <p>Long-métrage — Réalisation, Écriture, Commencé en 2025</p>
+            <div class="tags"><span class="tag">Super Héro</span><span class="tag">Scénario</span><span class="tag">En cours d'écriture</span></div>
+          </div>
+        </article>
 
-      <div class="meta">
-        <h3>Wraith</h3>
-        <p>Long-métrage — Réalisation, Scénarisation, Commencé en 2025</p>
-        <div class="tags">
-          <span class="tag">Super Héros</span>
-          <span class="tag">Scénario</span>
-          <span class="tag">En cours d'écriture</span>
-        </div>
-      </div>
-    </article>
-    <!-- CARD 3 -->
-    <article class="card reveal">
-      <div class="thumb">
-        <img src="images/Le_Casse.png" alt="Image du CASSE">
-      </div>
+        <!-- Projet 2 
+        <article class="card">
+          <div class="thumb"><img src="images/Lucien.png" alt="Affiche du projet Lucien"></div>
           <span class="img-tag">Image non définitive</span>
-
-      <div class="meta">
-        <h3>Le Casse</h3>
-        <p>Court-métrage — Réalisation, Scénarisation, Commencé en 2025</p>
-        <div class="tags">
-          <span class="tag">Policier</span>
-          <span class="tag">Scénario</span>
-          <span class="tag">En cours d'écriture</span>
-        </div>
-      </div>
-    </article>
-        <!-- CARD 4 -->
-    <article class="card reveal">
-      <div class="thumb">
-        <img src="images/La_FUITE.png" alt="Affiche du projet La FUITE">
-      </div>
+          <div class="meta">
+            <h3>Lucien</h3>
+            <p>Court-métrage — Réalisation, Écriture, 2025</p>
+            <div class="tags"><span class="tag">Horreur</span><span class="tag">Fantastique</span><span class="tag">Scénario</span><span class="tag">En cours d'écriture</span></div>
+          </div>
+        </article>-->
+        <article class="card">
+          <div class="thumb"><img src="images/Le_Casse.png" alt="Affiche du projet Lucien"></div>
           <span class="img-tag">Image non définitive</span>
+          <div class="meta">
+            <h3>Le casse</h3>
+            <p>Court-métrage — Réalisation, Écriture, 2025</p>
+            <div class="tags"><span class="tag">Braquage</span><span class="tag">Scénario</span><span class="tag">En cours d'écriture</span></div>
+          </div>
+        </article>
+        
+        <!-- Projet 3 -->
+        <article class="card">
+          <div class="thumb"><img src="images/La_FUITE.png" alt="Affiche du projet Fuite"></div>
+          <span class="img-tag">Image non définitive</span>
+          <div class="meta">
+            <h3>La Fuite</h3>
+            <p>Court-métrage — Réalisation, Écriture, 2024</p>
+            <div class="tags"><span class="tag">Drame</span><span class="tag">Suspense</span><span class="tag">Scénario</span><span class="tag">En cours d'écriture</span></div>
+          </div>
+        </article>
 
-      <div class="meta">
-        <h3>La Fuite</h3>
-        <p>Court-métrage — Réalisation, Scénarisation, Commencé en 2025</p>
-        <div class="tags">
-          <span class="tag">Harcelement</span>
-          <span class="tag">Scénario</span>
-          <span class="tag">En cours d'écriture</span>
-        </div>
       </div>
-    </article>
-    <!-- CARD 5 (vidéo — reste cachée pour l’instant)
-    <article class="card tall reveal" data-video="https://www.youtube.com/embed/4Xl0cNQ2uxI?rel=0&amp;modestbranding=1" tabindex="0" aria-label="Ouvrir la vidéo du projet — Accéder à mon rêve">
-      <div class="thumb">
-        <img src="https://images.unsplash.com/photo-1485841890310-6a055c88698a?q=80&w=2000&auto=format&fit=crop" alt="Gros plan d'un visage concentré">
-      </div>
-      <div class="meta">
-        <h3>Accéder à mon rêve</h3>
-        <p>Documentaire — Scénario & Réalisation, 2024</p>
-        <div class="tags">
-          <span class="tag">Docu</span>
-          <span class="tag">Société</span>
-          <span class="tag">Témoignages</span>
-        </div>
-      </div>
-      <button class="play btn" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7-11-7z"/></svg>
-        Voir
-      </button>
-    </article>
-    -->
-
-  </div>
-</section>
-
+    </section>
 
     <!-- À PROPOS -->
-    <section id="apropos" class="section">
+    <section id="apropos" class="section container">
       <p class="sub">Bio</p>
       <h2>À propos</h2>
+
       <div class="cols">
-        <div class="about-box reveal">
+
+        <div class="about-box">
           <p><strong>Bonjour, moi c'est VotreNom</strong> — je conçois et réalise des images pensées comme des expériences. J'aime les cadres précis, les textures organiques et les récits sincères. Mon travail a été diffusé en festivals et pour des marques.
           </p>
           <p>Disponible partout en <u>France</u> et à l'international.</p>
@@ -338,105 +324,65 @@
 
           </div>
         </div>
-        <div class="grid reveal">
+        <div class="grid">
           <div class="about-box">
-            <h3 style="margin-top:0">Sélection clients</h3>
+            <h3>Sélection clients</h3>
             <ul class="list">
-            <li><span>Aucun client pour le moment</span> <small></small></li>
-   <!--       <li><span>Canal+</span> <small>2023</small></li>
+              <li><span>Aucun client pour le moment</span></li>
+              
+                 <!--       <li><span>Canal+</span> <small>2023</small></li>
               <li><span>Association X</span> <small>2022</small></li>
               <li><span>Label Indé</span> <small>2021</small></li>
             </ul>   -->
+            </ul>
           </div>
+
           <div class="about-box">
-            <h3 style="margin-top:0">Compétences</h3>
+            <h3>Compétences</h3>
             <ul class="list">
-              <li><span>Réalisation</span> <small>Direction & découpage</small></li>
-              <li><span>Écriture</span> <small>Synopsis, script</small></li>
-              <li><span>DA</span> <small>Look dev, palette, typo</small></li>
+              <li><span>Réalisation</span> <small>Direction</small></li>
+              <li><span>Écriture</span> <small>Synopsis</small></li>
+              <li><span>Montage</span> <small>Post-production</small></li>
+              <li><span>Création visuelle</span> <small>Affiches & visuels</small></li>
             </ul>
           </div>
         </div>
+
       </div>
     </section>
 
     <!-- CONTACT -->
-       <section id="contact" class="section">
+    <section id="contact" class="section container">
       <p class="sub">Discutons</p>
       <h2>Contact</h2>
+
       <div class="cols">
-          <!-- <div class="about-box reveal">
-          <form id="contact-form">
-            <label>Nom<br><input required name="name" placeholder="Votre nom"/></label>
-            <label>Email<br><input required type="email" name="email" placeholder="vous@exemple.fr"/></label>
-            <label>Message<br><textarea required name="message" placeholder="Votre projet…"></textarea></label>
-            <button class="btn" type="submit">Envoyer</button>
-            <div id="success" class="success" role="status">Merci ! Votre message est prêt à être envoyé (démo).</div>
-          </form>
-        </div> -->
-        <div class="grid reveal">
-          <div class="about-box">
-            <h3 style="margin-top:0">Infos</h3>
+        <div class="about-box">
+          <h3>Infos</h3>
             <ul class="list">
               <li><span>Email</span> <small><a href="mailto:Salitotaksel@gmail.com">Salitotaksel@gmail.com</a></small></li>
               <li><span>Instagram</span> <small><a href="#">@votrenom</a></small></li>
               <li><span>Youtube</span> <small><a href="#">/votrenom</a></small></li>
               <li><span>Basé en</span> <small>France</small></li>
             </ul>
-          </div>
-
         </div>
       </div>
     </section>
   </main>
 
-  <!-- MODAL VIDEO
-  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Visionneuse vidéo" hidden>
-    <div id="overlay"></div>
-    <div id="box">
-      <button id="close" class="btn" aria-label="Fermer">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Fermer
-      </button>
-      <div id="player" class="player" role="document"></div>
-    </div>
-  </div> -->
+  <!-- FOOTER -->
   <footer>
-    <p>C 2025 Aksel Salitot — Aucun droits réservés</p>
-    <p><a href="mailto:bonjour@votrenom.fr">Salitotaksel@gmail.com</a></p>
+    <p>© 2025 Aksel Salitot — Aucun droits réservés</p>
+    <p><a href="mailto:Salitotaksel@gmail.com">Salitotaksel@gmail.com</a></p>
   </footer>
 
   <!-- TAB BAR -->
   <nav class="tabbar">
-    <a href="#top" class="tab-link active" aria-label="Accueil">
-      <i class="bi bi-house-fill"></i>
-      <span>Accueil</span>
-    </a>
-    <a href="#projets" class="tab-link" aria-label="Projets">
-      <i class="bi bi-film"></i>
-      <span>Projets</span>
-    </a>
-    <a href="#apropos" class="tab-link" aria-label="À propos">
-      <i class="bi bi-person-circle"></i>
-      <span>Bio</span>
-    </a>
-    <a href="#contact" class="tab-link" aria-label="Contact">
-      <i class="bi bi-envelope-fill"></i>
-      <span>Contact</span>
-    </a>
+    <a href="#top" class="tab-link active"><i class="bi bi-house"></i><span>Accueil</span></a>
+    <a href="#projets" class="tab-link"><i class="bi bi-projector"></i><span>Projets</span></a>
+    <a href="#apropos" class="tab-link"><i class="bi bi-person"></i><span>Bio</span></a>
+    <a href="#contact" class="tab-link"><i class="bi bi-envelope"></i><span>Contact</span></a>
   </nav>
-</body>
-
-  <style>
-    /* Lightbox styles */
-    #lightbox{position:fixed;inset:0;z-index:80;display:grid;place-items:center}
-    #lightbox[hidden]{display:none}
-    #overlay{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:saturate(1.2) blur(8px)}
-    #box{position:relative;z-index:2;width:min(100% - 32px, 1000px);border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#0f0f11;box-shadow:0 10px 50px rgba(0,0,0,.45)}
-    #close{position:absolute;top:10px;right:10px}
-    .player{aspect-ratio:16/9;width:100%;background:#000}
-    .player iframe{width:100%;height:100%;border:0}
-  </style>
 
   <script>
     // Smooth anchor scroll
@@ -446,6 +392,23 @@
         if(href.length>1){e.preventDefault();document.querySelector(href).scrollIntoView({behavior:'smooth'});}
       });
     });
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll(".slide");
+  let index = 0;
+
+  function showNextSlide() {
+    slides.forEach((slide, i) => {
+      slide.classList.remove("active");
+      slide.style.zIndex = 0;
+    });
+
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+    slides[index].style.zIndex = 1;
+  }
+
+  setInterval(showNextSlide, 15000);
+});
 
     // Reveal on scroll
     const io = new IntersectionObserver((entries)=>{
@@ -518,6 +481,7 @@ function updateTabbarTheme() {
   if (!bg) return;
 
   const [r,g,b] = bg.map(Number);
+
   const luminance = (0.299*r + 0.587*g + 0.114*b) / 255;
 
   if (luminance > 0.6) {
@@ -531,7 +495,7 @@ function updateTabbarTheme() {
 
 window.addEventListener("scroll", updateTabbarTheme);
 window.addEventListener("resize", updateTabbarTheme);
-document.addEventListener("DOMContentLoaded", updateTabbarTheme);
+
   </script>
 </body>
 </html>
